@@ -1,31 +1,36 @@
-import { Dataset } from '@/lib/starknet'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { User, Download, ExternalLink } from 'lucide-react'
+import { Dataset } from "@/lib/starknet";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { User, Download, ExternalLink } from "lucide-react";
 
 interface DatasetPreviewModalProps {
-  dataset: Dataset | null
-  isOpen: boolean
-  onClose: () => void
-  onPurchase?: (dataset: Dataset) => void
+  dataset: Dataset | null;
+  isOpen: boolean;
+  onClose: () => void;
+  onPurchase?: (dataset: Dataset) => void;
 }
 
-export const DatasetPreviewModal = ({ 
-  dataset, 
-  isOpen, 
-  onClose, 
-  onPurchase 
+export const DatasetPreviewModal = ({
+  dataset,
+  isOpen,
+  onClose,
+  onPurchase,
 }: DatasetPreviewModalProps) => {
-  if (!dataset) return null
+  if (!dataset) return null;
 
   const formatAddress = (address: string) => {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`
-  }
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
 
   const formatPrice = (price: bigint) => {
-    return `${Number(price) / 1e18} ETH`
-  }
+    return `${Number(price) / 1e18} ETH`;
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -35,40 +40,56 @@ export const DatasetPreviewModal = ({
             {dataset.name}
           </DialogTitle>
         </DialogHeader>
-        
+
         <div className="space-y-6 py-4">
           {/* Dataset Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-3">
               <div>
-                <Label className="text-sm font-medium text-muted-foreground">Category</Label>
+                <Label className="text-sm font-medium text-muted-foreground">
+                  Category
+                </Label>
                 <Badge variant="secondary" className="ml-2">
                   {dataset.category}
                 </Badge>
               </div>
-              
+
               <div>
-                <Label className="text-sm font-medium text-muted-foreground">Owner</Label>
+                <Label className="text-sm font-medium text-muted-foreground">
+                  Owner
+                </Label>
                 <div className="flex items-center space-x-2 mt-1">
                   <User className="h-4 w-4 text-muted-foreground" />
-                  <span className="font-mono text-sm">{formatAddress(dataset.owner)}</span>
+                  <span className="font-mono text-sm">
+                    {formatAddress(dataset.owner)}
+                  </span>
                 </div>
               </div>
-              
+
               <div>
-                <Label className="text-sm font-medium text-muted-foreground">Dataset ID</Label>
-                <p className="font-mono text-sm mt-1">#{dataset.id.toString()}</p>
+                <Label className="text-sm font-medium text-muted-foreground">
+                  Dataset ID
+                </Label>
+                <p className="font-mono text-sm mt-1">
+                  #{dataset.id.toString()}
+                </p>
               </div>
             </div>
-            
+
             <div className="space-y-3">
               <div>
-                <Label className="text-sm font-medium text-muted-foreground">Price</Label>
-                <p className="text-2xl font-bold mt-1">{formatPrice(dataset.price)}</p>
+                <Label className="text-sm font-medium text-muted-foreground">
+                  Price
+                </Label>
+                <p className="text-2xl font-bold mt-1">
+                  {formatPrice(dataset.price)}
+                </p>
               </div>
-              
+
               <div>
-                <Label className="text-sm font-medium text-muted-foreground">Storage</Label>
+                <Label className="text-sm font-medium text-muted-foreground">
+                  Storage
+                </Label>
                 <div className="flex items-center space-x-2 mt-1">
                   <span className="text-sm">IPFS</span>
                   <ExternalLink className="h-3 w-3 text-muted-foreground" />
@@ -78,22 +99,26 @@ export const DatasetPreviewModal = ({
           </div>
 
           {/* IPFS Hash */}
-          <div>
+          {/* <div>
             <Label className="text-sm font-medium text-muted-foreground">IPFS Hash</Label>
             <div className="mt-2 p-3 bg-muted rounded-lg border">
               <code className="text-xs font-mono break-all">
                 {dataset.ipfs_hash}
               </code>
             </div>
-          </div>
+          </div> */}
 
           {/* Mock Dataset Preview */}
           <div>
-            <Label className="text-sm font-medium text-muted-foreground">Dataset Preview</Label>
+            <Label className="text-sm font-medium text-muted-foreground">
+              Dataset Preview
+            </Label>
             <div className="mt-2 p-4 bg-muted rounded-lg border">
-              <div className="text-sm text-muted-foreground mb-2">Sample data structure:</div>
+              <div className="text-sm text-muted-foreground mb-2">
+                Sample data structure:
+              </div>
               <pre className="text-xs font-mono">
-{`{
+                {`{
   "samples": 10000,
   "features": ["text", "label", "category"],
   "format": "JSON/CSV",
@@ -106,11 +131,7 @@ export const DatasetPreviewModal = ({
 
           {/* Actions */}
           <div className="flex space-x-3 pt-4">
-            <Button
-              variant="outline"
-              onClick={onClose}
-              className="flex-1"
-            >
+            <Button variant="outline" onClick={onClose} className="flex-1">
               Close
             </Button>
             <Button
@@ -124,11 +145,11 @@ export const DatasetPreviewModal = ({
         </div>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
 const Label = ({ className, children, ...props }: any) => (
   <label className={`block text-sm font-medium ${className}`} {...props}>
     {children}
   </label>
-)
+);

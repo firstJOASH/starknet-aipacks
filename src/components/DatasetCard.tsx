@@ -1,73 +1,77 @@
-import { useRef, useEffect, useState } from 'react'
-import { useGSAP } from '@/hooks/useGSAP'
-import { Dataset } from '@/lib/starknet'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { DatasetPreviewModal } from '@/components/DatasetPreviewModal'
-import { Download, Eye, User, Loader2 } from 'lucide-react'
-import { useToast } from '@/hooks/use-toast'
+import { useRef, useEffect, useState } from "react";
+import { useGSAP } from "@/hooks/useGSAP";
+import { Dataset } from "@/lib/starknet";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { DatasetPreviewModal } from "@/components/DatasetPreviewModal";
+import { Download, Eye, User, Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface DatasetCardProps {
-  dataset: Dataset
-  onView?: (dataset: Dataset) => void
-  onPurchase?: (dataset: Dataset) => void
+  dataset: Dataset;
+  onView?: (dataset: Dataset) => void;
+  onPurchase?: (dataset: Dataset) => void;
 }
 
-export const DatasetCard = ({ dataset, onView, onPurchase }: DatasetCardProps) => {
-  const cardRef = useRef<HTMLDivElement>(null)
-  const { animateCardHover } = useGSAP()
-  const { toast } = useToast()
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false)
-  const [isPurchasing, setIsPurchasing] = useState(false)
+export const DatasetCard = ({
+  dataset,
+  onView,
+  onPurchase,
+}: DatasetCardProps) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const { animateCardHover } = useGSAP();
+  const { toast } = useToast();
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isPurchasing, setIsPurchasing] = useState(false);
 
   const formatAddress = (address: string) => {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`
-  }
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
 
   const formatPrice = (price: bigint) => {
     // Convert wei to ETH (simplified)
-    return `${Number(price) / 1e18} ETH`
-  }
+    return `${Number(price) / 1e18} ETH`;
+  };
 
   const handleMouseEnter = () => {
     if (cardRef.current) {
-      animateCardHover(cardRef.current, true)
+      animateCardHover(cardRef.current, true);
     }
-  }
+  };
 
   const handleMouseLeave = () => {
     if (cardRef.current) {
-      animateCardHover(cardRef.current, false)
+      animateCardHover(cardRef.current, false);
     }
-  }
+  };
 
   const handlePreview = () => {
-    setIsPreviewOpen(true)
-    onView?.(dataset)
-  }
+    setIsPreviewOpen(true);
+    onView?.(dataset);
+  };
 
   const handlePurchase = async () => {
-    setIsPurchasing(true)
+    setIsPurchasing(true);
     try {
       // Mock purchase process
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       toast({
         title: "Purchase successful!",
         description: `You have successfully purchased ${dataset.name}`,
-      })
-      
-      onPurchase?.(dataset)
+      });
+
+      onPurchase?.(dataset);
     } catch (error) {
       toast({
         title: "Purchase failed",
         description: "There was an error processing your purchase",
-        variant: "destructive"
-      })
+        variant: "destructive",
+      });
     } finally {
-      setIsPurchasing(false)
+      setIsPurchasing(false);
     }
-  }
+  };
 
   return (
     <div
@@ -103,12 +107,12 @@ export const DatasetCard = ({ dataset, onView, onPurchase }: DatasetCardProps) =
       </div>
 
       {/* IPFS Hash */}
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <div className="text-xs text-muted-foreground mb-1">IPFS Hash</div>
         <div className="font-mono text-xs bg-muted p-2 rounded border truncate">
           {dataset.ipfs_hash}
         </div>
-      </div>
+      </div> */}
 
       {/* Actions */}
       <div className="flex space-x-2">
@@ -132,13 +136,13 @@ export const DatasetCard = ({ dataset, onView, onPurchase }: DatasetCardProps) =
           ) : (
             <Download className="h-4 w-4" />
           )}
-          <span>{isPurchasing ? 'Purchasing...' : 'Purchase'}</span>
+          <span>{isPurchasing ? "Purchasing..." : "Purchase"}</span>
         </Button>
       </div>
 
       {/* Hover overlay effect */}
       <div className="absolute inset-0 border border-ring opacity-0 group-hover:opacity-20 rounded-xl transition-opacity duration-300 pointer-events-none" />
-      
+
       {/* Preview Modal */}
       <DatasetPreviewModal
         dataset={dataset}
@@ -147,5 +151,5 @@ export const DatasetCard = ({ dataset, onView, onPurchase }: DatasetCardProps) =
         onPurchase={handlePurchase}
       />
     </div>
-  )
-}
+  );
+};

@@ -1,66 +1,68 @@
-import { useRef, useEffect } from 'react'
-import { useAccount } from '@starknet-react/core'
-import { useAppStore } from '@/stores/useAppStore'
-import { useGSAP } from '@/hooks/useGSAP'
-import { Dataset } from '@/lib/starknet'
-import { DatasetCard } from '@/components/DatasetCard'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Upload, Download, Wallet, Copy, ExternalLink } from 'lucide-react'
+import { useRef, useEffect } from "react";
+import { useAccount } from "@starknet-react/core";
+import { useAppStore } from "@/stores/useAppStore";
+import { useGSAP } from "@/hooks/useGSAP";
+import { Dataset } from "@/lib/starknet";
+import { DatasetCard } from "@/components/DatasetCard";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Upload, Download, Wallet, Copy, ExternalLink } from "lucide-react";
 
 export const Profile = () => {
-  const profileRef = useRef<HTMLDivElement>(null)
-  const { animatePageEnter } = useGSAP()
-  
-  const { address, isConnected } = useAccount()
-  const { userStats, setUploadModalOpen } = useAppStore()
+  const profileRef = useRef<HTMLDivElement>(null);
+  const { animatePageEnter } = useGSAP();
+
+  const { address, isConnected } = useAccount();
+  const { userStats, setUploadModalOpen } = useAppStore();
 
   // Mock user datasets
   const userDatasets: Dataset[] = [
     {
       id: BigInt(4),
-      name: 'Custom NLP Dataset',
-      owner: address || '0x0',
-      ipfs_hash: 'QmYjtig7VJQ6XsnUjqqJvj7QaMcCAwtrgNdahSiFofrE7o',
-      price: BigInt('150000000000000000'), // 0.15 ETH
-      category: 'Natural Language Processing'
-    }
-  ]
+      name: "Custom NLP Dataset",
+      owner: address || "0x0",
+      ipfs_hash: "QmYjtig7VJQ6XsnUjqqJvj7QaMcCAwtrgNdahSiFofrE7o",
+      price: BigInt("150000000000000000"), // 0.15 ETH
+      category: "Natural Language Processing",
+    },
+  ];
 
   useEffect(() => {
     if (profileRef.current) {
-      animatePageEnter(profileRef.current)
+      animatePageEnter(profileRef.current);
     }
-  }, [])
+  }, []);
 
   const formatAddress = (addr: string) => {
-    return `${addr.slice(0, 8)}...${addr.slice(-6)}`
-  }
+    return `${addr.slice(0, 8)}...${addr.slice(-6)}`;
+  };
 
   const copyAddress = () => {
     if (address) {
-      navigator.clipboard.writeText(address)
-      // Could add toast notification here
+      navigator.clipboard.writeText(address);
     }
-  }
+  };
 
   const generateAvatar = (address: string) => {
-    // Simple color generation based on address
-    const hash = address.slice(2, 8)
-    const hue = parseInt(hash, 16) % 360
-    return `hsl(${hue}, 50%, 50%)`
-  }
+    const hash = address.slice(2, 8);
+    const hue = parseInt(hash, 16) % 360;
+    return `hsl(${hue}, 50%, 50%)`;
+  };
 
   if (!isConnected) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center space-y-4">
           <Wallet className="h-16 w-16 text-muted-foreground mx-auto" />
-          <h2 className="text-2xl font-semibold text-foreground">Connect Your Wallet</h2>
-          <p className="text-muted-foreground">Please connect your wallet to view your profile</p>
+          <h2 className="text-2xl font-semibold text-foreground">
+            Connect Your Wallet
+          </h2>
+          <p className="text-muted-foreground">
+            Please connect your wallet to view your profile
+          </p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -72,18 +74,20 @@ export const Profile = () => {
             {/* Avatar */}
             <div
               className="w-20 h-20 rounded-full flex items-center justify-center text-white font-bold text-2xl"
-              style={{ backgroundColor: generateAvatar(address || '') }}
+              style={{ backgroundColor: generateAvatar(address || "") }}
             >
               {address?.slice(2, 4).toUpperCase()}
             </div>
-            
+
             {/* User Info */}
             <div className="flex-1 space-y-4">
               <div>
-                <h1 className="text-2xl font-bold text-foreground mb-2">My Profile</h1>
+                <h1 className="text-2xl font-bold text-foreground mb-2">
+                  My Profile
+                </h1>
                 <div className="flex items-center space-x-2">
                   <code className="bg-muted px-3 py-1 rounded font-mono text-sm">
-                    {formatAddress(address || '')}
+                    {formatAddress(address || "")}
                   </code>
                   <Button
                     variant="ghost"
@@ -99,7 +103,7 @@ export const Profile = () => {
                     asChild
                     className="h-6 w-6 p-0"
                   >
-                    <a 
+                    <a
                       href={`https://starkscan.co/contract/${address}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -114,17 +118,25 @@ export const Profile = () => {
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center space-x-2">
                   <Upload className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">Uploads:</span>
-                  <Badge variant="secondary">{userStats?.uploads || userDatasets.length}</Badge>
+                  <span className="text-sm text-muted-foreground">
+                    Uploads:
+                  </span>
+                  <Badge variant="secondary">
+                    {userStats?.uploads || userDatasets.length}
+                  </Badge>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Download className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">Downloads:</span>
+                  <span className="text-sm text-muted-foreground">
+                    Downloads:
+                  </span>
                   <Badge variant="secondary">{userStats?.downloads || 0}</Badge>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Wallet className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">Total Earned:</span>
+                  <span className="text-sm text-muted-foreground">
+                    Total Earned:
+                  </span>
                   <Badge variant="secondary">0.15 ETH</Badge>
                 </div>
               </div>
@@ -146,8 +158,12 @@ export const Profile = () => {
         {/* My Datasets */}
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-semibold text-foreground">My Datasets</h2>
-            <p className="text-muted-foreground">{userDatasets.length} datasets</p>
+            <h2 className="text-2xl font-semibold text-foreground">
+              My Datasets
+            </h2>
+            <p className="text-muted-foreground">
+              {userDatasets.length} datasets
+            </p>
           </div>
 
           {userDatasets.length > 0 ? (
@@ -156,15 +172,17 @@ export const Profile = () => {
                 <DatasetCard
                   key={dataset.id.toString()}
                   dataset={dataset}
-                  onView={(dataset) => console.log('View:', dataset)}
-                  onPurchase={(dataset) => console.log('Edit:', dataset)}
+                  onView={(dataset) => console.log("View:", dataset)}
+                  onPurchase={(dataset) => console.log("Edit:", dataset)}
                 />
               ))}
             </div>
           ) : (
             <div className="text-center py-20 ainest-card">
               <Upload className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-foreground mb-2">No datasets yet</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-2">
+                No datasets yet
+              </h3>
               <p className="text-muted-foreground mb-6">
                 Start by uploading your first dataset to the marketplace.
               </p>
@@ -180,37 +198,47 @@ export const Profile = () => {
 
         {/* Recent Activity */}
         <div className="space-y-6">
-          <h2 className="text-2xl font-semibold text-foreground">Recent Activity</h2>
-          
+          <h2 className="text-2xl font-semibold text-foreground">
+            Recent Activity
+          </h2>
+
           <div className="ainest-card">
             <div className="space-y-4">
               <div className="flex items-center justify-between py-3 border-b border-border last:border-b-0">
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span className="text-foreground">Dataset uploaded: Custom NLP Dataset</span>
+                  <span className="text-foreground">
+                    Dataset uploaded: Custom NLP Dataset
+                  </span>
                 </div>
-                <span className="text-sm text-muted-foreground">2 hours ago</span>
+                <span className="text-sm text-muted-foreground">
+                  2 hours ago
+                </span>
               </div>
-              
+
               <div className="flex items-center justify-between py-3 border-b border-border last:border-b-0">
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <span className="text-foreground">Purchased: ImageNet Classification Dataset</span>
+                  <span className="text-foreground">
+                    Purchased: ImageNet Classification Dataset
+                  </span>
                 </div>
                 <span className="text-sm text-muted-foreground">1 day ago</span>
               </div>
-              
+
               <div className="flex items-center justify-between py-3">
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                   <span className="text-foreground">Wallet connected</span>
                 </div>
-                <span className="text-sm text-muted-foreground">3 days ago</span>
+                <span className="text-sm text-muted-foreground">
+                  3 days ago
+                </span>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

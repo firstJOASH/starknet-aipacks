@@ -1,10 +1,11 @@
-import { StarknetConfig, publicProvider } from '@starknet-react/core'
-import { argent, braavos } from '@starknet-react/core'
-import { mainnet, sepolia } from '@starknet-react/chains'
-import { Chain } from '@starknet-react/chains'
+import { publicProvider } from "@starknet-react/core";
+import { mainnet, sepolia } from "@starknet-react/chains";
+import { Chain } from "@starknet-react/chains";
+import { InjectedConnector } from "starknetkit/injected";
+import { WebWalletConnector } from "starknetkit/webwallet";
 
 // Contract addresses - Update these with actual deployed contract addresses
-export const CONTRACT_ADDRESS = '0x...' // Replace with actual contract address
+export const CONTRACT_ADDRESS = "0x..."; // Replace with actual contract address
 
 // Dataset interface matching Cairo contract
 export interface Dataset {
@@ -24,31 +25,33 @@ export interface UserStats {
 
 // Available connectors
 export const connectors = [
-  argent(),
-  braavos(),
-]
+  new InjectedConnector({
+    options: { id: "argentX", name: "Ready Wallet (formerly Argent)" },
+  }),
+  new InjectedConnector({
+    options: { id: "braavos", name: "Braavos" },
+  }),
+  new WebWalletConnector({ url: "https://web.argent.xyz" }),
+];
 
 // Chains configuration
-export const chains: Chain[] = [
-  mainnet,
-  sepolia,
-]
+export const chains: Chain[] = [mainnet, sepolia];
 
 // Provider configuration
-export const provider = publicProvider()
+export const provider = publicProvider();
 
 // Dataset categories
 export const DATASET_CATEGORIES = [
-  'Computer Vision',
-  'Natural Language Processing',
-  'Audio Processing', 
-  'Time Series',
-  'Reinforcement Learning',
-  'Medical Data',
-  'Financial Data',
-  'IoT Sensor Data',
-  'Social Media',
-  'Other'
-] as const
+  "Computer Vision",
+  "Natural Language Processing",
+  "Audio Processing",
+  "Time Series",
+  "Reinforcement Learning",
+  "Medical Data",
+  "Financial Data",
+  "IoT Sensor Data",
+  "Social Media",
+  "Other",
+] as const;
 
-export type DatasetCategory = typeof DATASET_CATEGORIES[number]
+export type DatasetCategory = (typeof DATASET_CATEGORIES)[number];
