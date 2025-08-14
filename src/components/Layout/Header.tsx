@@ -1,15 +1,14 @@
 import { useEffect, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAccount, useDisconnect } from "@starknet-react/core";
 import { useAppStore } from "@/stores/useAppStore";
 import { useGSAP } from "@/hooks/useGSAP";
-import { Moon, Sun, User, LogOut, ArrowLeft, Home, ShoppingBag } from "lucide-react";
+import { Moon, Sun, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WalletConnectionModal } from "@/components/WalletConnectionModal";
 
 export const Header = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const headerRef = useRef<HTMLElement>(null);
   const { animatePageEnter, animateThemeTransition } = useGSAP();
 
@@ -36,65 +35,24 @@ export const Header = () => {
     return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
   };
 
-  const handleGoBack = () => {
-    navigate(-1);
-  };
-
-  const canGoBack = window.history.length > 1 && location.pathname !== "/";
-
   return (
     <header
       ref={headerRef}
       className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-50"
     >
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Navigation Controls */}
-        <div className="flex items-center space-x-2">
-          {canGoBack && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleGoBack}
-              className="transition-all duration-200 hover:bg-accent"
-              title="Go back"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          )}
-          
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
-            <span className="text-primary-foreground font-bold text-lg">
-              AI
-            </span>
-          </div>
-          <span className="text-xl font-bold text-foreground">nest</span>
-          </Link>
+        {/* Logo */}
+        <Link to="/" className="flex items-center space-x-2 group">
+        <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
+          <span className="text-primary-foreground font-bold text-lg">
+            AI
+          </span>
         </div>
+        <span className="text-xl font-bold text-foreground">nest</span>
+        </Link>
 
         {/* Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <Link
-            to="/"
-            className={`flex items-center space-x-1 ainest-nav-link ${
-              location.pathname === "/" ? "text-foreground" : ""
-            }`}
-            title="Home"
-          >
-            <Home className="h-4 w-4" />
-            <span>Home</span>
-          </Link>
-          <Link
-            to="/marketplace"
-            className={`flex items-center space-x-1 ainest-nav-link ${
-              location.pathname === "/marketplace" ? "text-foreground" : ""
-            }`}
-            title="Marketplace"
-          >
-            <ShoppingBag className="h-4 w-4" />
-            <span>Marketplace</span>
-          </Link>
           {isConnected && (
             <Link
               to="/profile"
