@@ -4,6 +4,7 @@ import { useAppStore } from "@/stores/useAppStore";
 import { useGSAP } from "@/hooks/useGSAP";
 import { Dataset } from "@/lib/starknet";
 import { DatasetCard } from "@/components/DatasetCard";
+import { BackNavigation } from "@/components/BackNavigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Upload, Download, Wallet, Copy, ExternalLink } from "lucide-react";
@@ -68,6 +69,7 @@ export const Profile = () => {
   return (
     <div ref={profileRef} className="min-h-screen p-6">
       <div className="container mx-auto max-w-6xl space-y-8">
+        <BackNavigation />
         {/* Profile Header */}
         <div className="ainest-card">
           <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6">

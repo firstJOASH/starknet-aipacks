@@ -4,6 +4,7 @@ import { useGSAP } from '@/hooks/useGSAP'
 import { Dataset } from '@/lib/starknet'
 import { CategorySidebar } from '@/components/CategorySidebar'
 import { DatasetCard } from '@/components/DatasetCard'
+import { BackNavigation } from '@/components/BackNavigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Search, Filter, Grid, List } from 'lucide-react'
@@ -88,6 +89,8 @@ export const Marketplace = () => {
       <CategorySidebar />
       
       <main ref={mainRef} className="flex-1 p-6">
+        <BackNavigation />
+        
         {/* Header */}
         <div className="mb-8">
           <h1 className="ainest-section-title mb-4">Dataset Marketplace</h1>
