@@ -43,12 +43,12 @@ export const Header = () => {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2 group">
-        <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
-          <span className="text-primary-foreground font-bold text-lg">
-            AI
-          </span>
-        </div>
-        <span className="text-xl font-bold text-foreground">nest</span>
+          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
+            <span className="text-primary-foreground font-bold text-lg">
+              AI
+            </span>
+          </div>
+          <span className="text-xl font-bold text-foreground">nest</span>
         </Link>
 
         {/* Navigation */}

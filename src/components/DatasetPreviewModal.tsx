@@ -29,7 +29,11 @@ export const DatasetPreviewModal = ({
   };
 
   const formatPrice = (price: bigint) => {
-    return `${Number(price) / 1e18} STRK`;
+    // Convert raw wei to STRK for display
+    const priceStrk = Number(price) / 1e18;
+    if (priceStrk === 0) return "Free";
+    if (priceStrk < 1) return `${priceStrk.toFixed(18)} STRK`;
+    return `${priceStrk.toFixed(3)} STRK`;
   };
 
   return (
